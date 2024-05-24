@@ -4,7 +4,7 @@ function UserComponents({ users, currentValue, setValue, orders }) {
   // list
   // users = [1,2,3,4] -> [{userId:1},{userId:2}]
   // selectedUsers = [2] -> [{userId:2}]
-  // remainingUser = [1,3,4]-> [{userId:3}, {userId:4}, {userId:1}]
+  // remainingUser = [1,3,4]> [{userId:3}, {userId:4}, {userId:1}]
   const remainingUsers = users.filter(
     (user) => !orders.some((selectedUser) => selectedUser?.userId == user.id)
   );
