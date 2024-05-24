@@ -27,7 +27,7 @@ function CheckoutPage() {
 
   const onOrderHandler = () => {
     if (selectedUser === "" || selectFood === "" || date === "") {
-      alert("Please select name ,food and date!");
+      alert("Please select name, food and date!");
       return;
     }
     let tempOrders = [...order];
