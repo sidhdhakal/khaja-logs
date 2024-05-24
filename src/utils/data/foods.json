@@ -1,0 +1,39 @@
+[
+    {
+        "id": 1,
+        "name": "Chicken MOMO",
+        "price": 120,
+        "image":"/image/momo.png"
+    },
+    {
+        "id": 2,
+        "name": "Biryani",
+        "price": 100,
+        "image":"/image/biryani.png"
+    },
+    {
+        "id": 3,
+        "name": "Burger",
+        "price": 90,
+        "image":"/image/burger.png"
+
+    },
+    {
+        "id": 4,
+        "name": "Chaumin",
+        "price": 150,
+        "image":"/image/chaumin.png"
+    },
+    {
+        "id": 5,
+        "name": "Omlet",
+        "price": 70,
+        "image":"/image/omlet.png"
+    },
+    {
+        "id": 6,
+        "name": "Pizza",
+        "price": 570,
+        "image":"/image/pizza.png"
+    }
+]
