@@ -1,5 +1,8 @@
 body{
   font-family: monospace;
+  padding: 0px;
+  margin: 0px;
+  
 }
 .checkpage{
   display: grid;
@@ -8,7 +11,6 @@ body{
   height: 100vh;
 }
 .left_side{
-  overflow: hidden;
   padding: 10px 20px;
   border-right: 2px solid lightgray;
   display: flex;
@@ -30,9 +32,6 @@ body{
 .user_label{
   border-radius: 5px;
 }
-
-
-
 .btn{
   cursor: pointer;
   border-radius: 5px;
@@ -49,6 +48,7 @@ table {
   border: 1px solid lightgray; 
   border-radius: 5px;
   border-collapse: collapse;
+  width: 100%;
 }
 thead{
   background-color: #EAF0F1;
@@ -85,6 +85,7 @@ td{
   grid-template-columns: auto auto auto;
   gap: 5px;
 }
+
 .food_card{
   display: flex;
   flex-direction: column;
@@ -107,3 +108,124 @@ td{
   flex-direction: column;
   gap: 10px;
 }
+.nav-link {
+  text-decoration: none;
+  color: white;
+  background-color: #192A56;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.nav-link.active {
+  color: #192A56;
+  background-color: white;
+  border-radius: 5px;
+}
+.admin_container{
+  background-color: white;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.page_template_container {
+  display: grid;
+  grid-template-columns: 150px auto;
+  grid-gap: 20px;  
+  height: 100vh;
+}
+
+.leftsidepage_container {
+  background-color: white; 
+  border-right: 2px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  justify-content:space-between;
+  background-color: #192A56;
+  height: 100vh;
+
+}
+.rightsidepage_container{
+  height: 100%;
+  overflow-y: scroll
+}
+
+.nav_container{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+.date_container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.inputfood_container,.inputuser_container {
+  align-items: center; 
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.inputfood_form,.inputuser_form {
+  background-color: #ffffff;
+  padding: 5px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; 
+  width: 300px;
+}
+
+.inputfood_form label {
+  font-size: 14px;
+  margin-bottom: 5px; 
+}
+
+.inputfood_form .input {
+  border: 1px solid #ccc; 
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.inputfood_form button,.inputuser_container button {
+  padding: 10px;
+  background-color: #007bff;
+  color: #ffffff; 
+  border: none;
+  border-radius: 4px; 
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.inputfood_form button:hover {
+  background-color: #0056b3;
+}
+
+.create-food-button, .create-user-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  background-color: #4CAF50; 
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.create-food-button:hover, .create-user-button:hover {
+  background-color: #45CE30;
+}
+

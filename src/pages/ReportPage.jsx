@@ -1,7 +1,7 @@
 import React from "react";
-
+import PageTemplate from "../components/PageTemplate";
 const ReportPage = () => {
-  return <div>ReportPage</div>;
+  return <PageTemplate title={"Reports"}></PageTemplate>;
 };
 
 export default ReportPage;

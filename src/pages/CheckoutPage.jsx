@@ -7,6 +7,7 @@ import OrderSummary from "../components/OrderSummaryComponents";
 
 import userData from "../utils/data/users.json";
 import foodsData from "../utils/data/foods.json";
+import { useNavigate } from "react-router-dom";
 
 function CheckoutPage() {
   const [users, setUsers] = useState([]);
@@ -16,6 +17,7 @@ function CheckoutPage() {
   const [selectFood, setSelectFood] = useState("");
   const [remarks, setRemarks] = useState("");
   const [order, setOrder] = useState([]);
+  const navigate = useNavigate();
 
   // orders: [{:1, foodId:1,remarks:""}]
   // users : [{id:1}, {id:2}]
@@ -60,13 +62,29 @@ function CheckoutPage() {
   return (
     <div className="checkpage">
       <div className="left_side">
-        <h1
+        <div
           style={{
-            color: "#EEC213",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          Lets Order Khaja
-        </h1>
+          <h1
+            style={{
+              color: "#EEC213",
+            }}
+          >
+            Lets Order Khaja
+          </h1>
+          <div
+            onClick={() => navigate("/order")}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            Login
+          </div>
+        </div>
         <DateComponents currentValue={date} setValue={setDate} />
         <UserComponents
           orders={order}
@@ -74,6 +92,7 @@ function CheckoutPage() {
           currentValue={selectedUser}
           setValue={setSelectedUser}
         />
+
         <SelectfoodComponents
           foods={foods}
           currentValue={selectFood}
