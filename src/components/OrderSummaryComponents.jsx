@@ -1,4 +1,5 @@
 import React from "react";
+import ButtonComponents from "./ButtonComponents";
 
 function OrderSummary({
   order,
@@ -44,12 +45,19 @@ function OrderSummary({
                 <td>{foodDetail?.price}</td>
                 <td>{detail.remarks}</td>
                 <td>
-                  <button
-                    className="remove_btn"
-                    onClick={() => onRemoveHandler(detail.userId)}
-                  >
-                    Remove
-                  </button>
+                  <ButtonComponents
+                    name={"Remove"}
+                    style={{
+                      border: "2px solid red",
+                      padding: "4px",
+                      borderColor: "red",
+                      color: "red",
+                      backgroundColor: "white",
+                      fontSize: "12px",
+                    }}
+                    colorType={"red"}
+                    onClickHandler={() => onRemoveHandler(detail.userId)}
+                  />
                 </td>
               </tr>
             );
@@ -62,15 +70,11 @@ function OrderSummary({
           </tr>
         </tbody>
       </table>
-      <button
-        onClick={onSubmitHandler}
-        style={{
-          backgroundColor: "#E5B143",
-        }}
-        className="btn"
-      >
-        Confirm
-      </button>
+      <ButtonComponents
+        colorType={"yellow"}
+        name={"Conform"}
+        onClickHandler={onSubmitHandler}
+      />
     </div>
   );
 }

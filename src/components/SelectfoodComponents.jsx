@@ -7,7 +7,6 @@ function SelectFoodComponent({ foods, currentValue, setValue }) {
       <div className="food_container">
         {foods.map((details) => {
           let isActive = currentValue == details.id;
-          console.log(foods);
           return (
             <div
               className="food_card"

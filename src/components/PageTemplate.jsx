@@ -25,6 +25,9 @@ const PageTemplate = ({ children, title, titleRightChildren }) => {
             <NavLink end to="/user" className="nav-link">
               User
             </NavLink>
+            <NavLink end to="/dashboard" className="nav-link">
+              Dashboard
+            </NavLink>
           </nav>
         </div>
         <div

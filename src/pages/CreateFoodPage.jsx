@@ -1,45 +1,60 @@
-import React, { useEffect, useState } from "react";
-import PageTemplate from "../components/PageTemplate";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import foods from "../utils/data/foods.json";
+import PageTemplate from "../components/PageTemplate";
+import { AppContext } from "../context/appContext";
+import ButtonComponents from "../components/ButtonComponents";
 
 export default function CreateFoodPage() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState("");
   const navigate = useNavigate();
+  const appState = useContext(AppContext);
   const params = useParams();
-
+    
   const isEdit = params?.id ? true : false;
 
-  const getFoodDetails = (id) => {
-    const food = foods.find((food) => food.id === parseInt(id));
-    console.log(food);
-    if (food) {
-      console.log(food);
-      setName(food.name);
-      setImage(food.image);
-      setPrice(food.price);
+  useEffect(() => {
+    if (isEdit) {
+      const food = appState.foods.find(
+        (food) => food.id === parseInt(params.id)
+      );
+      if (food) {
+        setName(food.name);
+        setImage(food.image);
+        setPrice(food.price);
+      }
     }
-  };
+  }, [isEdit, params.id, appState.foods]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (name === "" || image === null || price === "") {
+    if (name === "" || image === "" || price === "") {
       alert("Please fill out all fields.");
       return;
     }
 
-    alert("Form submitted successfully!");
+    if (isEdit) {
+      appState.updateFoodHandler({
+        id: parseInt(params.id),
+        name,
+        price,
+        image,
+      });
+      alert("Food updated successfully!");
+    } else {
+      appState.addFoodHandler({
+        name,
+        price,
+        image,
+      });
+      alert("Food created successfully!");
+    }
     setName("");
-    setImage(null);
+    setImage("");
+    setPrice("");
     navigate("/food");
   };
-
-  useEffect(() => {
-    if (isEdit) {
-      getFoodDetails(params.id);
-    }
-  }, [isEdit, params.id]);
 
   return (
     <PageTemplate title={isEdit ? "Edit Foods" : "Create Foods"}>
@@ -48,39 +63,34 @@ export default function CreateFoodPage() {
           <div className="input_container">
             <label htmlFor="name">Name</label>
             <input
-              className="input"
               type="text"
               id="name"
-              name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-
+        
           <div className="input_container">
             <label htmlFor="image">Image</label>
             <input
-              className="input"
-              type="file"
+              type="text"
               id="image"
-              name="image"
-              onChange={(e) => setImage(e.target.files[0])}
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
             />
           </div>
 
           <div className="input_container">
             <label htmlFor="price">Price</label>
             <input
-              className="input"
               type="number"
               id="price"
-              name="price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
 
-          <button type="submit">Submit</button>
+          <ButtonComponents name={"Submit"} colorType={"blue"} onClickHandler={handleSubmit}>{isEdit ? "Update" : "Create"}</ButtonComponents>
         </form>
       </div>
     </PageTemplate>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import PageTemplate from "../components/PageTemplate";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import users from "../utils/data/users.json";
+import { AppContext } from "../context/appContext";
+import PageTemplate from "../components/PageTemplate";
 
 export default function CreateUserPage() {
   const [name, setName] = useState("");
@@ -9,10 +9,12 @@ export default function CreateUserPage() {
   const navigate = useNavigate();
   const params = useParams();
 
+  const appState = useContext(AppContext);
+
   const isEdit = params?.id ? true : false;
 
   const getUserDetails = (id) => {
-    const user = users.find((user) => user.id === parseInt(id));
+    const user = appState.users.find((user) => user.id === parseInt(id));
     if (user) {
       setName(user.name);
       setDepartment(user.department);
@@ -30,6 +32,25 @@ export default function CreateUserPage() {
     if (name === "" || department === "") {
       alert("Please fill out all fields");
       return;
+    }
+    const userData = {
+      id: isEdit ? parseInt(params.id) : new Date().getTime(),
+      name,
+      department,
+    };
+
+    if (isEdit) {
+      appState.updateUserHandler({
+        id: parseInt(params.id),
+        name,
+        department,
+      });
+    } else {
+      appState.addUserHandler({
+        id: isEdit ? parseInt(params.id) : new Date().getTime(),
+        name,
+        department,
+      });
     }
 
     alert("Form submitted successfully!");

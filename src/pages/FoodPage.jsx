@@ -1,79 +1,93 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import foodData from "../utils/data/foods.json";
 import PageTemplate from "../components/PageTemplate";
+import { AppContext } from "../context/appContext";
+import ButtonComponents from "../components/ButtonComponents";
+import TableComponent from "../components/TableComponent";
 
 export default function FoodPage() {
-  const [foods, setFoods] = useState([]);
   const navigate = useNavigate();
+  const { foods, deleteFoodHandler } = useContext(AppContext);
 
-  useEffect(() => {
-    setFoods(foodData);
-  }, []);
-
-  const handleCreateFood = () => {
+  const createFoodHandler = () => {
     navigate("/food/create");
   };
 
-  const removeHandler = (id) => {
-    const deleteFoods = foods.filter((food) => food.id !== id);
-    setFoods(deleteFoods);
+  const removeFoodHandler = (id) => {
+    deleteFoodHandler(id);
   };
+  const updateFoodHandler = (id) => {
+    navigate(`/food/edit/${id}`);
+  };
+
 
   return (
     <PageTemplate
-      title={"Foods"}
+      title="Foods"   
       titleRightChildren={
         <div style={{ display: "flex", justifyContent: "end" }}>
-          <button className="create-food-button" onClick={handleCreateFood}>
-            Create Food
-          </button>
+          <ButtonComponents
+            colorType={"green"}
+            name={"Create food"}
+            onClickHandler={() => createFoodHandler()}
+          />
         </div>
       }
     >
       <div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th>SN</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th colSpan={2}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {foods.map((details, key) => (
+        <TableComponent
+          tableHead={[
+            {
+              name: "SN",
+            },
+            {
+              name: "Name",
+            },
+            {
+              name:"price"
+            },
+            {
+              name: "Action",
+              colSpan: 3,
+            },
+          ]}
+          data={foods}
+          row={(item, key) => {
+            return (
               <tr key={key}>
                 <td>{key + 1}</td>
-                <td style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={details.image}
-                    alt={details.name}
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      marginRight: "10px",
-                    }}
-                  />
-                  {details.name}
-                </td>
-                <td>{details.price}</td>
-                <td
-                  style={{ color: "red" }}
-                  onClick={() => removeHandler(details.id)}
-                >
-                  Delete
-                </td>
-                <td
-                  style={{ color: "gray" }}
-                  onClick={() => navigate(`/food/edit/${details.id}`)}
-                >
-                  Update
+                <td>{item.name}</td>
+                <td>{item.price}</td>
+                <td>
+                <ButtonComponents name="Delete"
+                onClickHandler={()=>  removeFoodHandler(item.id)}
+                style={{
+                  border: "2px solid red",
+                  padding: "4px",
+                  borderColor: "red",
+                  color: "red",
+                  backgroundColor: "white",
+                  fontSize: "12px",
+                }}
+                colorType={"red"}/>
+                 </td>
+                 <td>
+                <ButtonComponents name="Update"
+                onClickHandler={()=>  updateFoodHandler(item.id)}
+                style={{
+                  border: "2px solid red",
+                  padding: "4px",
+                  borderColor: "green",
+                  color: "green",
+                  backgroundColor: "white",
+                  fontSize: "12px",
+                }}
+                colorType={"green"}/>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            );
+          }}
+        />
       </div>
     </PageTemplate>
   );

@@ -1,32 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PageTemplate from "../components/PageTemplate";
-import userOrders from "../utils/data/orders.json";
-import users from "../utils/data/users.json";
-import foods from "../utils/data/foods.json";
+import TableComponent from "../components/TableComponent";
+import { AppContext } from "../context/appContext";
 
 export default function OrderPage() {
-  const [orderFoods, setOrderFoods] = useState([]);
+  const appState = useContext(AppContext);
+
   const [selectedDate, setSelectedDate] = useState("");
   const [total, setTotal] = useState(0);
 
+  const foods = appState.foods;
+  const users = appState.users;
+  const orders = appState.orders;
+
+  console.log();
+
+  const filteredOrders = selectedDate
+    ? orders.filter((order) => order.date === selectedDate)
+    : orders;
+
   useEffect(() => {
     const filteredOrders = selectedDate
-      ? userOrders.filter((order) => order.date === selectedDate)
-      : userOrders;
-
-    setOrderFoods(filteredOrders);
+      ? orders.filter((order) => order.date === selectedDate)
+      : orders;
 
     let totalPrice = 0;
+
     filteredOrders.forEach((detail) => {
       const foodDetail = foods.find(
-        (food) => food.id === parseInt(detail.foodId)
+        (food) => food.id === parseInt(detail?.foodId)
       );
+
       if (foodDetail) {
-        totalPrice += foodDetail.price;
+        totalPrice += foodDetail?.price;
       }
     });
     setTotal(totalPrice);
-  }, [selectedDate]);
+  }, [selectedDate, orders, foods]);
 
   const handleDateChange = (e) => {
     setSelectedDate(e.target.value);
@@ -43,38 +53,62 @@ export default function OrderPage() {
           onChange={handleDateChange}
         />
       </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>SN</th>
-            <th>Name</th>
-            <th>Food</th>
-            <th>Price</th>
-            <th>Remarks</th>
-          </tr>
-        </thead>
+      <TableComponent
+        tableHead={[
+          { name: "SN" },
+          { name: "Name" },
+          { name: "Food" },
+          { name: "price" },
+          { name: "Remarks" },
+        ]}
+        data={filteredOrders}
+        row={(details, key) => {
+          const userDetail = users.find(
+            (user) => user.id === parseInt(details.userId)
+          );
+          const foodDetail = foods.find(
+            (food) => food.id === parseInt(details.foodId)
+          );
+
+          return (
+            <tr key={key}>
+              <td>{key + 1}</td>
+              <td>{userDetail?.name}</td>
+              <td>{foodDetail?.name}</td>
+              <td>{foodDetail?.price}</td>
+              <td>{details?.remarks}</td>
+            </tr>
+          );
+        }}
+      />
+
+      <h3>Total Price: {parseInt(total)}</h3>
+    </PageTemplate>
+  );
+
+  {
+    /* <table className="table">
+        
         <tbody>
-          {orderFoods.map((detail, key) => {
+          {filteredOrders.map((detail, key) => {
             const userDetail = users.find(
-              (user) => user.id === parseInt(detail.userId)
+              (user) => user.id === parseInt(detail?.userId)
             );
             const foodDetail = foods.find(
-              (food) => food.id === parseInt(detail.foodId)
+              (food) => food.id === parseInt(detail?.foodId)
             );
-
+               
             return (
               <tr key={key}>
                 <td>{key + 1}</td>
                 <td>{userDetail?.name}</td>
                 <td>{foodDetail?.name}</td>
                 <td>{foodDetail?.price}</td>
-                <td>{detail.remarks}</td>
+                <td>{detail?.remarks}</td>
               </tr>
             );
           })}
         </tbody>
-      </table>
-      <h3>Total Price: {total}</h3>
-    </PageTemplate>
-  );
+      </table> */
+  }
 }

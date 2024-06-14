@@ -6,6 +6,7 @@ import OrderPage from "./pages/OrderPage";
 import UserPage from "./pages/UserPage";
 import CreateFoodPage from "./pages/CreateFoodPage";
 import CreateUserPage from "./pages/CreateUserPage";
+import DashboardPage from "./pages/DashboardPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
   {
     path: "/user/edit/:id",
     element: <CreateUserPage />,
-  }
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardPage />,
+  },
 ]);
 
 export default router;

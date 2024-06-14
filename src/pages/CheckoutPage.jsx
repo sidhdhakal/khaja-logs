@@ -1,64 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import DateComponents from "../components/DateComponents";
 import UserComponents from "../components/UserComponents";
 import SelectfoodComponents from "../components/SelectfoodComponents";
 import RemarksComponents from "../components/RemarksComponents";
+import ButtonComponents from "../components/ButtonComponents";
 import OrderSummary from "../components/OrderSummaryComponents";
-
-import userData from "../utils/data/users.json";
-import foodsData from "../utils/data/foods.json";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/appContext";
 
 function CheckoutPage() {
-  const [users, setUsers] = useState([]);
-  const [foods, setFoods] = useState([]);
   const [date, setDate] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [selectFood, setSelectFood] = useState("");
   const [remarks, setRemarks] = useState("");
   const [order, setOrder] = useState([]);
   const navigate = useNavigate();
+  const appState = useContext(AppContext);
+  const foods = appState.foods;
+  const users = appState.users;
 
-  // orders: [{:1, foodId:1,remarks:""}]
-  // users : [{id:1}, {id:2}]
-
-  useEffect(() => {
-    setUsers(userData);
-    setFoods(foodsData);
-  }, []);
+  const generateRandomId = () => {
+    return Math.random().toString(36).substr(2, 9);
+  };
 
   const onOrderHandler = () => {
     if (selectedUser === "" || selectFood === "" || date === "") {
       alert("Please select name, food and date!");
       return;
     }
-    let tempOrders = [...order];
-    tempOrders.push({
+    const newOrder = {
+      id: generateRandomId(),
       date: date,
       userId: selectedUser,
       foodId: selectFood,
       remarks: remarks,
-    });
+    };
 
-    setOrder(tempOrders);
-    console.log(order);
+    setOrder((prevOrder) => prevOrder.concat(newOrder));
     setSelectedUser("");
     setSelectFood("");
     setRemarks("");
   };
 
-  const onRemoveHandler = (userId) => {
-    let tempOrders = [...order];
-    tempOrders = tempOrders.filter((e) => e.userId !== userId);
-    setOrder(tempOrders);
-  };
-
   const onSubmitHandler = () => {
-    alert("Order submitted succesfully");
-    // api hit
-    // clear order
+    appState.addOrderHandler(order);
+    alert("Order submitted successfully");
     setOrder([]);
   };
+
   return (
     <div className="checkpage">
       <div className="left_side">
@@ -92,7 +81,6 @@ function CheckoutPage() {
           currentValue={selectedUser}
           setValue={setSelectedUser}
         />
-
         <SelectfoodComponents
           foods={foods}
           currentValue={selectFood}
@@ -103,16 +91,11 @@ function CheckoutPage() {
           currentValue={remarks}
           setValue={setRemarks}
         />
-        <button
-          className="btn"
-          style={{
-            backgroundColor: "#2C3335",
-            color: "white",
-          }}
-          onClick={onOrderHandler}
-        >
-          Place Order
-        </button>
+        <ButtonComponents
+          colorType={"black"}
+          name={"Place Order"}
+          onClickHandler={onOrderHandler}
+        />
       </div>
       <div className="right_side">
         {order?.length > 0 ? (
@@ -122,7 +105,11 @@ function CheckoutPage() {
             foods={foods}
             date={date}
             onSubmitHandler={onSubmitHandler}
-            onRemoveHandler={onRemoveHandler}
+            onRemoveHandler={(userId) =>
+              setOrder((prevOrder) =>
+                prevOrder.filter((order) => order.userId !== userId)
+              )
+            }
           />
         ) : (
           <div
